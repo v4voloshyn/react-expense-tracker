@@ -1,22 +1,33 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { GlobalContext } from '../context/globalState';
 import TransactionItem from './TransactionItem';
 
 const HistoryList = () => {
-  const {transactions} = useContext(GlobalContext);
+  const {transactions, getTransactions} = useContext(GlobalContext);
+
+  /* const get = useRef(() => {})
+  get.current = () => {
+    getTransactions();
+  }
+  useEffect(() => {
+    get.current();
+  }, []) */
   
+  useEffect(() => {
+    getTransactions();
+  }, [])
    return (
       <>
       <h3>History</h3>
         <ul className="list">
-          {!transactions.length && <h2>No transactions...</h2>}
+          {!transactions.length && <h2>No transactions yet...</h2>}
           {transactions &&
             transactions.map(transaction => (
               <TransactionItem 
-                key={transaction.id} 
+                key={transaction._id} 
                 text={transaction.text}
                 amount={transaction.amount}
-                id={transaction.id}
+                id={transaction._id}
               />
             ))
             }
